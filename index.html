@@ -2,154 +2,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ciclo del amor 🐧❤️🐧</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ciclo del Amor</title>
+  <link rel="icon" href="favicon.png" type="image/png" />
   <style>
-    :root {
-      --blue: #add8e6;
-      --cyan: #b2dfee;
-      --mint: #c0f0f0;
-      --light-green: #c8facc;
-      --yellow: #fff176;
-      --gold: #ffe055;
-      --orange: #ffbc7d;
-      --deep-orange: #ff704d;
-      --red: #ff5733;
-      --text-color: #1c1c1e;
-      --bg: #f9f9fb;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen;
-    }
     body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       margin: 0;
-      padding: 0;
+      padding: 1em;
+      background: #fafafa;
+      text-align: center;
     }
     h1 {
-      text-align: center;
-      font-size: 1.8rem;
-      padding: 1.2rem 0 0.5rem;
+      font-size: 1.8em;
+      margin-bottom: 0.2em;
     }
-    .controls {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-    .controls input {
-      font-family: var(--font);
-      font-size: 1rem;
-      padding: 0.4rem;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-    }
-    .calendar-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-    .day-labels {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      text-align: center;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 5px;
+    .subtitle {
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      color: #666;
+      font-size: 0.9em;
+      margin-top: -0.3em;
+      margin-bottom: 1.5em;
     }
     .calendar {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
+      gap: 0.5em;
+      max-width: 600px;
+      margin: 0 auto;
     }
     .day {
-      background: white;
       border-radius: 12px;
-      padding: 6px;
-      min-height: 64px;
-      font-size: 0.9em;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-    .day span {
-      font-size: 0.75em;
-    }
-    .empty {
-      background: transparent;
-      box-shadow: none;
+      padding: 0.6em;
+      font-size: 0.8em;
+      background: #e0f7fa;
+      box-shadow: 0 0 2px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <h1>Ciclo del amor 🐧❤️🐧</h1>
-
-  <div class="controls">
-    <input type="date" id="startDay" onchange="updateCalendar()">
+  <h1>🐧❤️ Ciclo del amor 🐧❤️</h1>
+  <div class="subtitle">Diseñado con ❤️ para María y Manuel</div>
+  <div class="calendar">
+    <!-- Ejemplo de días -->
+    <div class="day">1<br><small>0.1%</small></div>
+    <div class="day">2<br><small>0.1%</small></div>
+    <div class="day">3<br><small>0.1%</small></div>
+    <!-- Agrega más días aquí según tu lógica -->
   </div>
-
-  <div class="calendar-container">
-    <div class="day-labels">
-      <div>Lun</div>
-      <div>Mar</div>
-      <div>Mié</div>
-      <div>Jue</div>
-      <div>Vie</div>
-      <div>Sáb</div>
-      <div>Dom</div>
-    </div>
-    <div class="calendar" id="calendar"></div>
-  </div>
-
-  <script>
-    const risks = [
-      0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.5, 1.0, 3.0, 5.0,
-      9.0, 15.0, 22.0, 30.0, 33.0, 28.0, 20.0, 10.0, 4.0, 2.0,
-      0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1
-    ];
-
-    const colors = risk => {
-      if (risk <= 0.2) return 'var(--blue)';
-      if (risk <= 0.5) return 'var(--cyan)';
-      if (risk <= 1.0) return 'var(--mint)';
-      if (risk <= 3.0) return 'var(--light-green)';
-      if (risk <= 10.0) return 'var(--yellow)';
-      if (risk <= 20.0) return 'var(--orange)';
-      if (risk <= 30.0) return 'var(--deep-orange)';
-      return 'var(--red)';
-    };
-
-    function updateCalendar() {
-      const calendar = document.getElementById("calendar");
-      calendar.innerHTML = "";
-
-      const start = new Date(document.getElementById("startDay").value);
-      const firstWeekday = start.getDay();
-      const offset = (firstWeekday + 6) % 7;
-
-      for (let i = 0; i < offset; i++) {
-        const emptyCell = document.createElement("div");
-        emptyCell.className = "day empty";
-        calendar.appendChild(emptyCell);
-      }
-
-      for (let i = 0; i < 30; i++) {
-        const risk = risks[i];
-        const day = new Date(start);
-        day.setDate(start.getDate() + i);
-        const dayNum = i + 1;
-        const weekDay = day.toLocaleDateString("es-MX", { weekday: "short" });
-        const monthDay = day.getDate();
-
-        const div = document.createElement("div");
-        div.className = "day";
-        div.style.background = colors(risk);
-        div.innerHTML = `<strong>${dayNum}</strong><span>${risk.toFixed(1)}%</span><span>${weekDay} ${monthDay}</span>`;
-        calendar.appendChild(div);
-      }
-    }
-  </script>
 </body>
 </html>
