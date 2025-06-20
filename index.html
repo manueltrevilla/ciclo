@@ -11,46 +11,80 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       margin: 0;
       padding: 1em;
-      background: #fafafa;
+      background: #fff;
+      color: #333;
       text-align: center;
     }
     h1 {
-      font-size: 1.8em;
-      margin-bottom: 0.2em;
+      font-size: 2em;
+      margin-bottom: 0.1em;
     }
     .subtitle {
       font-family: 'Georgia', serif;
       font-style: italic;
       color: #666;
       font-size: 0.9em;
-      margin-top: -0.3em;
       margin-bottom: 1.5em;
+    }
+    label, select {
+      font-size: 1em;
+      margin: 0.5em;
     }
     .calendar {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 0.5em;
-      max-width: 600px;
-      margin: 0 auto;
+      gap: 0.4em;
+      max-width: 90vw;
+      margin: 2em auto;
     }
     .day {
       border-radius: 12px;
-      padding: 0.6em;
+      padding: 0.6em 0.3em;
       font-size: 0.8em;
       background: #e0f7fa;
       box-shadow: 0 0 2px rgba(0,0,0,0.1);
+    }
+    .day strong {
+      display: block;
+      font-size: 0.9em;
+    }
+    .controls {
+      margin-top: 1em;
     }
   </style>
 </head>
 <body>
   <h1>🐧❤️ Ciclo del amor 🐧❤️</h1>
   <div class="subtitle">Diseñado con ❤️ para María y Manuel</div>
-  <div class="calendar">
-    <!-- Ejemplo de días -->
-    <div class="day">1<br><small>0.1%</small></div>
-    <div class="day">2<br><small>0.1%</small></div>
-    <div class="day">3<br><small>0.1%</small></div>
-    <!-- Agrega más días aquí según tu lógica -->
+
+  <div class="controls">
+    <label for="month">Mes actual:</label>
+    <select id="month">
+      <option>Enero</option><option>Febrero</option><option>Marzo</option>
+      <option>Abril</option><option>Mayo</option><option selected>Junio</option>
+      <option>Julio</option><option>Agosto</option><option>Septiembre</option>
+      <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
+    </select>
+
+    <label for="startDay">Día de inicio del ciclo:</label>
+    <select id="startDay">
+      ${[...Array(31).keys()].map(i => `<option>${i+1}</option>`).join('')}
+    </select>
   </div>
+
+  <div class="calendar">
+    <!-- Ejemplo de días (solo primeros 7 para demostración) -->
+    <div class="day"><strong>1</strong>0.1%</div>
+    <div class="day"><strong>2</strong>0.1%</div>
+    <div class="day"><strong>3</strong>0.1%</div>
+    <div class="day"><strong>4</strong>0.1%</div>
+    <div class="day"><strong>5</strong>0.1%</div>
+    <div class="day"><strong>6</strong>0.2%</div>
+    <div class="day"><strong>7</strong>0.5%</div>
+  </div>
+
+  <script>
+    // Lógica futura para ajustar días según el mes y día de inicio
+  </script>
 </body>
 </html>
