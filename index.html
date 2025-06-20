@@ -69,7 +69,7 @@
 
   <div class="controls">
     <label for="startDay">¿Qué día inició el ciclo?</label>
-    <input type="date" id="startDate" max="9999-12-31" />
+    <select id="startDay">
       <option disabled selected>Selecciona día</option>
     </select>
   </div>
@@ -109,12 +109,8 @@
       startSelect.appendChild(option);
     }
 
-    document.getElementById("startDate").addEventListener("change", () => {
-      const startDateValue = document.getElementById("startDate").value;
-      const startDate = new Date(startDateValue);
-      const startDay = startDate.getDate();
-      const month = startDate.getMonth();
-      const year = startDate.getFullYear();
+    startSelect.addEventListener("change", () => {
+      const startDay = parseInt(startSelect.value);
       const today = new Date();
       const year = today.getFullYear();
       const month = today.getMonth(); // 0-indexed
