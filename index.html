@@ -34,7 +34,7 @@
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 0.4em;
-      max-width: 90vw;
+      max-width: 95vw;
       margin: 2em auto;
     }
     .day {
@@ -43,6 +43,7 @@
       font-size: 0.8em;
       background: #e0f7fa;
       box-shadow: 0 0 2px rgba(0,0,0,0.1);
+      min-height: 50px;
     }
     .day strong {
       display: block;
@@ -51,6 +52,15 @@
     .controls {
       margin-top: 1em;
     }
+    .weekday-labels {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      max-width: 95vw;
+      margin: 1em auto 0;
+      font-weight: bold;
+      font-size: 0.8em;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -58,33 +68,78 @@
   <div class="subtitle">Diseñado con ❤️ para María y Manuel</div>
 
   <div class="controls">
-    <label for="month">Mes actual:</label>
-    <select id="month">
-      <option>Enero</option><option>Febrero</option><option>Marzo</option>
-      <option>Abril</option><option>Mayo</option><option selected>Junio</option>
-      <option>Julio</option><option>Agosto</option><option>Septiembre</option>
-      <option>Octubre</option><option>Noviembre</option><option>Diciembre</option>
-    </select>
-
-    <label for="startDay">Día de inicio del ciclo:</label>
-    <select id="startDay">
-      ${[...Array(31).keys()].map(i => `<option>${i+1}</option>`).join('')}
+    <label for="startDay">¿Qué día inició el ciclo?</label>
+    <input type="date" id="startDate" max="9999-12-31" />
+      <option disabled selected>Selecciona día</option>
     </select>
   </div>
 
-  <div class="calendar">
-    <!-- Ejemplo de días (solo primeros 7 para demostración) -->
-    <div class="day"><strong>1</strong>0.1%</div>
-    <div class="day"><strong>2</strong>0.1%</div>
-    <div class="day"><strong>3</strong>0.1%</div>
-    <div class="day"><strong>4</strong>0.1%</div>
-    <div class="day"><strong>5</strong>0.1%</div>
-    <div class="day"><strong>6</strong>0.2%</div>
-    <div class="day"><strong>7</strong>0.5%</div>
+  <div class="weekday-labels">
+    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+  </div>
+  <div class="calendar" id="calendar">
+    <!-- Aquí se llenará el calendario dinámicamente -->
   </div>
 
   <script>
-    // Lógica futura para ajustar días según el mes y día de inicio
+    const riesgos = [
+      0.1, 0.1, 0.1, 0.1, 0.1, 0.2, 0.5, 1.0, 3.0, 5.0,
+      9.0, 15.0, 22.0, 30.0, 33.0, 28.0, 20.0, 10.0, 4.0,
+      2.0, 0.5, 0.3, 0.2, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1
+    ];
+
+    const colores = riesgo => {
+      if (riesgo <= 0.2) return "#b3e5fc";       // azul claro
+      if (riesgo <= 0.5) return "#a7ffeb";       // celeste suave
+      if (riesgo <= 3.0) return "#c8e6c9";       // verde claro
+      if (riesgo <= 10.0) return "#fff59d";      // amarillo
+      if (riesgo <= 20.0) return "#ffcc80";      // naranja claro
+      if (riesgo <= 30.0) return "#ff8a65";      // naranja fuerte
+      return "#e57373";                          // rojo oscuro
+    };
+
+    const calendarDiv = document.getElementById("calendar");
+    const startSelect = document.getElementById("startDay");
+
+    // Rellenar menú de selección de día
+    for (let i = 1; i <= 31; i++) {
+      let option = document.createElement("option");
+      option.value = i;
+      option.text = i;
+      startSelect.appendChild(option);
+    }
+
+    document.getElementById("startDate").addEventListener("change", () => {
+      const startDateValue = document.getElementById("startDate").value;
+      const startDate = new Date(startDateValue);
+      const startDay = startDate.getDate();
+      const month = startDate.getMonth();
+      const year = startDate.getFullYear();
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth(); // 0-indexed
+
+      calendarDiv.innerHTML = "";
+
+      let firstDate = new Date(year, month, startDay);
+      let offset = (firstDate.getDay() + 6) % 7; // getDay: 0 (Sunday) to 6 (Saturday), shift to Monday start
+
+      // Filler empty cells
+      for (let i = 0; i < offset; i++) {
+        const empty = document.createElement("div");
+        calendarDiv.appendChild(empty);
+      }
+
+      for (let i = 0; i < riesgos.length; i++) {
+        const date = new Date(year, month, startDay + i);
+        const dayEl = document.createElement("div");
+        dayEl.className = "day";
+        dayEl.style.background = colores(riesgos[i]);
+        const label = `<strong>${i + 1}</strong>${riesgos[i].toFixed(1)}%<br><small>${date.getDate()}/${date.getMonth() + 1}</small>`;
+        dayEl.innerHTML = label;
+        calendarDiv.appendChild(dayEl);
+      }
+    });
   </script>
 </body>
 </html>
